@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: crc_workstation
-# Recipe:: install-docker
+# Recipe:: install_docker
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 
@@ -15,9 +15,9 @@ service 'docker' do
 end
 
 gem_package 'kitchen-docker' do
-    gem_binary '/opt/chefdk/embedded/bin/gem'
-    options '--no-user-install'
-    action :upgrade
+  gem_binary '/opt/chefdk/embedded/bin/gem'
+  options '--no-user-install'
+  action :upgrade
 end
 
 chef_gem 'kitchen-dokken' do
@@ -25,11 +25,11 @@ chef_gem 'kitchen-dokken' do
 end
 
 docker_image 'centos' do
-    tag 'centos6'
-    action :pull
+  tag 'centos6'
+  action :pull
 end
 
 docker_image 'ubuntu' do
-    tag '14.04'
-    action :pull
+  tag '14.04'
+  action :pull
 end

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: crc_workstation
-# Recipe:: fix-root-volume-resize
+# Recipe:: fix_root_volume_resize
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 

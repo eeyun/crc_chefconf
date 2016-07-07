@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: crc_workstation
-# Recipe:: set-selinux-permissive
+# Recipe:: set_selinux_permissive
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 

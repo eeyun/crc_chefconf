@@ -1,13 +1,13 @@
 #
 # Cookbook Name:: crc_workstation
-# Recipe:: yum-update
+# Recipe:: yum_update
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 
 execute 'Yum Update All the Things' do
   command 'yum update -y'
   action :run
-  not_if { File.exists?('/root/yum-updated') }
+  not_if { File.exist?('/root/yum-updated') }
   notifies :create, 'file[/root/yum-updated]'
 end
 
