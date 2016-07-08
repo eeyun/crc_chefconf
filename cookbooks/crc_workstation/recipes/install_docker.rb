@@ -20,10 +20,6 @@ gem_package 'kitchen-docker' do
   action :upgrade
 end
 
-chef_gem 'kitchen-dokken' do
-  compile_time true
-end
-
 docker_image 'centos' do
   tag 'centos6'
   action :pull

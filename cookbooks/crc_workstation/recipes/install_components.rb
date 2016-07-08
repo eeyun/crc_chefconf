@@ -20,8 +20,8 @@ end
 
 package 'git'
 
-execute 'install stove' do
-  command 'su sumac -l -c "chef gem install stove && touch /tmp/stove.installed"'
-  not_if { ::File.exist?('/tmp/stove.installed') }
-  action :run
+gem_package 'stove' do
+  gem_binary '/opt/chefdk/embedded/bin/gem'
+  options '--no-user-install'
+  action :upgrade
 end
