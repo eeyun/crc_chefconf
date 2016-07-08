@@ -39,7 +39,7 @@ resource "aws_route_table" "classroom-routes" {
 resource "aws_subnet" "classroom-subnet" {
     vpc_id = "${aws_vpc.classroom-vpc.id}"
     cidr_block = "10.0.0.0/24"
-    availability_zone = "${var.region}a"
+    availability_zone = "${var.region}b"
     tags {
         Name = "${null_resource.intermediates.triggers.subnet_name}"
     }
@@ -136,19 +136,19 @@ resource "aws_security_group" "classroom-sg" {
   }
 }
 
-resource "aws_instance" "Essentials-Workstation" {
+resource "aws_instance" "CRC-Workstation" {
   depends_on = ["aws_internet_gateway.classroom-gw"]
-  availability_zone = "${var.region}a"
+  availability_zone = "${var.region}b"
   count = "${var.node_num}"
-  ami = "ami-913625fb"
-  instance_type = "t1.micro"
+  ami = "${var.baked_ami}"
+  instance_type = "m3.medium"
   key_name = ""
   vpc_security_group_ids = ["${aws_security_group.classroom-sg.id}"]
   subnet_id = "${aws_subnet.classroom-subnet.id}"
   associate_public_ip_address = true
   connection {
-    user = "chef"
-    password = "chef"
+    user = "sumac"
+    password = "H4b!7AT"
   }
   tags {
       Name = "${format("${var.customer}-Essentials-Workstation-%02d", count.index + 1)}"
@@ -163,49 +163,7 @@ resource "aws_instance" "Essentials-Workstation" {
   }
   provisioner "remote-exec" {
     inline = [
-    "ip=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)",
-    "host=$(hostname -f)",
-    "echo \"export ETCD_OPTS=\\\"--name=$host --data-dir=/tmp/$host.etcd --initial-advertise-peer-urls http://$ip:2380 --listen-peer-urls http://0.0.0.0:2380,http://0.0.0.0:7001 --listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 --advertise-client-urls=http://$ip:2379,http://$ip:4001 --discovery ${var.disco}\\\"\" | sudo tee /etc/environment",
-    "sudo service iptables stop",
-    "sudo service etcd start",
-    "sleep 60 && etcdctl mkdir /workstations/$host && etcdctl set /workstations/$host/1 {\\\"IP\\\":\\\"$ip\\\"}"
+    "sudo service iptables stop"
     ]
   }
 }
-
-resource "aws_instance" "Essentials-Guacamole-Server" {
-    depends_on = ["aws_internet_gateway.classroom-gw"]
-    count = 1
-    ami = "ami-1c302376"
-    instance_type = "c3.large"
-    key_name = ""
-    vpc_security_group_ids = ["${aws_security_group.classroom-sg.id}"]
-    subnet_id = "${aws_subnet.classroom-subnet.id}"
-    associate_public_ip_address = true
-    connection {
-      user = "chef"
-      password = "chef"
-    }
-    tags {
-        Name = "${var.customer}-Essentials-Guacamole-Server"
-        Trainer = "${var.trainer}"
-        Department = "${var.department}"
-        Customer = "${var.customer}"
-    }
-    root_block_device {
-      volume_type = "gp2"
-      volume_size = "20"
-      delete_on_termination = true
-    }
-    provisioner "remote-exec" {
-      inline = [
-        "sudo ufw disable",
-        "ip=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)",
-        "host=$(hostname -f)",
-        "echo \"export ETCD_OPTS=\\\"--name=$host --data-dir=/tmp/$host.etcd --initial-advertise-peer-urls http://$ip:2380 --listen-peer-urls http://0.0.0.0:2380,http://0.0.0.0:7001 --listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 --advertise-client-urls=http://$ip:2379,http://$ip:4001 --discovery ${var.disco}\\\"\" | sudo tee /etc/environment",
-        "sudo service etcd start",
-        "sleep 90 && students=\"${var.student_list}\"; etcdctl mkdir /students/$students && etcdctl set /students/$students/1 {\\\"NAME\\\":\\\"$students\\\"}",
-        "sleep 30 && sudo su -c \"confd -config-file='/etc/confd/confd.toml' &\""
-      ]
-    }
-  }

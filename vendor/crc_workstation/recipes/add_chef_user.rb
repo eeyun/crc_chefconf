@@ -4,27 +4,27 @@
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 
-# Create user 'chef' with password 'chef' for student use
-user 'chef' do
+# Create user 'sumac' with password 'H4b!7AT' for student use
+user 'sumac' do
   action :create
-  comment 'Chef Boyardee'
-  home '/home/chef'
+  comment 'OH YEAH'
+  home '/home/sumac'
   shell '/bin/bash'
-  password 'chef'
+  password 'H4b!7AT'
   supports manage_home: true
 end
 
-# Setup 'chef' users .bash_profile
-template '/home/chef/.bash_profile' do
+# Setup 'sumac' users .bash_profile
+template '/home/sumac/.bash_profile' do
   source 'chef-bash-profile.erb'
-  owner 'chef'
-  group 'chef'
+  owner 'sumac'
+  group 'sumac'
   mode '0644'
 end
 
-execute 'reset chef password' do
-  command 'echo "chef:chef"|chpasswd && touch /tmp/pass_updated'
-  not_if ::File.exist?('/tmp/pass_updated')
+execute 'reset sumac password' do
+  command 'echo "sumac:H4b!7AT"|chpasswd && touch /tmp/pass_updated'
+  not_if { ::File.exist?('/tmp/pass_updated') }
 end
 
 case node['platform_family']
@@ -55,7 +55,7 @@ when 'debian'
   end
 end
 
-# Enables password-less sudo for user 'chef'
+# Enables password-less sudo for user 'sumac'
 template '/etc/sudoers' do
   source 'sudoers.erb'
   owner 'root'
