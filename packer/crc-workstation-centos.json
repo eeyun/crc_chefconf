@@ -16,7 +16,7 @@
     "instance_type": "m3.medium",
     "source_ami": "ami-bc8131d4",
     "ssh_username": "root",
-    "ami_name": "ChefConf CRC Workstation - CentOS 6.7 - 0.1.0"
+    "ami_name": "ChefConf CRC Workstation - CentOS 6.7 - 0.1.1"
   }],
 
   "provisioners": [{
