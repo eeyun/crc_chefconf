@@ -24,7 +24,7 @@ end
 
 execute 'reset sumac password' do
   command 'echo "sumac:H4b!7AT"|chpasswd && touch /tmp/pass_updated'
-  not_if ::File.exist?('/tmp/pass_updated')
+  not_if { ::File.exist?('/tmp/pass_updated') }
 end
 
 case node['platform_family']

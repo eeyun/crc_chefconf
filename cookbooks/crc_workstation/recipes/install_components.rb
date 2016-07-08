@@ -18,17 +18,10 @@ editors.each do |pkg|
   end
 end
 
-chef_gem 'stove' do
-  compile_time true
-  action :install
-end
+package 'git'
 
-append_if_no_line 'Update max startups' do
-  path '/etc/ssh/sshd_config'
-  line 'MaxStartups 250'
-end
-
-append_if_no_line 'Update max sessions' do
-  path '/etc/ssh/sshd_config'
-  line 'MaxSessions 250'
+execute 'install stove' do
+  command 'su sumac -l -c "chef gem install stove && touch /tmp/stove.installed"'
+  not_if { ::File.exist?('/tmp/stove.installed') }
+  action :run
 end
