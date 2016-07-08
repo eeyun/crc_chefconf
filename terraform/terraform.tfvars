@@ -6,7 +6,7 @@ department = "Success Engineering"
 trainer = "Ian Henry"
 
 # Class Information
-customer = "Chef Conf"
+customer = "crc_chefconf"
 student_list = ""
 baked_ami = "ami-a7f87eb0"
 

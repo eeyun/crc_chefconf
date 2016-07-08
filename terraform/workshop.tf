@@ -39,7 +39,7 @@ resource "aws_route_table" "classroom-routes" {
 resource "aws_subnet" "classroom-subnet" {
     vpc_id = "${aws_vpc.classroom-vpc.id}"
     cidr_block = "10.0.0.0/24"
-    availability_zone = "${var.region}a"
+    availability_zone = "${var.region}b"
     tags {
         Name = "${null_resource.intermediates.triggers.subnet_name}"
     }
@@ -136,9 +136,9 @@ resource "aws_security_group" "classroom-sg" {
   }
 }
 
-resource "aws_instance" "Essentials-Workstation" {
+resource "aws_instance" "CRC-Workstation" {
   depends_on = ["aws_internet_gateway.classroom-gw"]
-  availability_zone = "${var.region}a"
+  availability_zone = "${var.region}b"
   count = "${var.node_num}"
   ami = "${var.baked_ami}"
   instance_type = "m3.medium"
