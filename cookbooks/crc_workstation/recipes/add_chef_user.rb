@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: crc_workstation
-# Recipe:: add-chef-user
+# Recipe:: add_chef_user
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 
@@ -11,7 +11,7 @@ user 'chef' do
   home '/home/chef'
   shell '/bin/bash'
   password 'chef'
-  supports :manage_home => true
+  supports manage_home: true
 end
 
 # Setup 'chef' users .bash_profile
@@ -27,9 +27,9 @@ execute 'reset chef password' do
   not_if ::File.exist?('/tmp/pass_updated')
 end
 
-case node[:platform_family]
+case node['platform_family']
 when 'rhel'
-# Enables password authentication
+  # Enables password authentication
   template '/etc/ssh/sshd_config' do
     source 'sshd_config.erb'
     owner 'root'
@@ -42,7 +42,7 @@ when 'rhel'
     action :nothing
   end
 when 'debian'
-# Enables password authentication
+  # Enables password authentication
   template '/etc/ssh/sshd_config' do
     source 'sshd_config.erb'
     owner 'root'
