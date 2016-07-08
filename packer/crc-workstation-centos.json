@@ -23,7 +23,7 @@
     "type": "chef-solo",
     "install_command": "curl -L https://www.chef.io/chef/install.sh | {{if .Sudo}}sudo{{end}} bash -s",
     "cookbook_paths": ["../vendor"],
-    "run_list": ["chef-essentials-classroom::build-chef-workstation"]
+    "run_list": ["crc_workstation::build_chef_workstation"]
 
   }]
 }
