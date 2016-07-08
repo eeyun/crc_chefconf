@@ -6,6 +6,7 @@ variable "secret_key" {}
 variable "region" {}
 
 # Nodes
+variable "baked_ami" {}
 variable "node_num" {}
 variable "department" {}
 variable "trainer" {}

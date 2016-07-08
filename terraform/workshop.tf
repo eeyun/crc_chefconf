@@ -140,8 +140,8 @@ resource "aws_instance" "Essentials-Workstation" {
   depends_on = ["aws_internet_gateway.classroom-gw"]
   availability_zone = "${var.region}a"
   count = "${var.node_num}"
-  ami = "ami-913625fb"
-  instance_type = "t1.micro"
+  ami = "${var.baked_ami}"
+  instance_type = "m3.medium"
   key_name = ""
   vpc_security_group_ids = ["${aws_security_group.classroom-sg.id}"]
   subnet_id = "${aws_subnet.classroom-subnet.id}"
